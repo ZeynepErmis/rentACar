@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -14,27 +16,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "brands")
+@Table(name = "models")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Brand {
-
-	// primary key
+public class Model {
 	@Id
-	// increase ID one by one
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	// column name in table
 	@Column(name = "id")
 	private int id;
 
 	@Column(name = "name")
 	private String name;
 
-	// mappedBy = "brand" === private Brand brand; in Model.java
-	@OneToMany(mappedBy = "brand")
-	List<Model> models;
+	@ManyToOne
+	@JoinColumn(name = "brand_id")
+	private Brand brand;
 
+	@OneToMany(mappedBy = "model")
+	private List<Car> cars;
 }
